@@ -61,51 +61,55 @@ void Custom::RobotControl()
     cmd.reserve = 0;
 
     // First leg of box
-    if ( motiontime > 0 && motiontime < 1000 ) {
+    if ( motiontime > 0 && motiontime < 2000 ) {
         cmd.mode = 2;
         cmd.gaitType = 1;
+        cmd.velocity[0] = 0.2f;
         cmd.footRaiseHeight = 0.1;
     }
 
-    if ( motiontime > 2000 && motiontime < 4000 ) {
+    if ( motiontime > 3000 && motiontime < 4000 ) {
         cmd.mode = 10;
     }
 
     // Second leg of box
-    if ( motiontime > 4000 && motiontime < 5000 ) {
+    if ( motiontime > 9000 && motiontime < 10000 ) {
         cmd.mode = 2;
         cmd.gaitType = 1;
+        cmd.velocity[0] = 0.2f;
         cmd.footRaiseHeight = 0.1;
     }
 
-    if ( motiontime > 5000 && motiontime < 7000 ) {
+    if ( motiontime > 11000 && motiontime < 12000 ) {
         cmd.mode = 10;
     }
 
     // Third leg of box
-    if ( motiontime > 7000 && motiontime < 8000 ) {
+    if ( motiontime > 17000 && motiontime < 19000 ) {
         cmd.mode = 2;
         cmd.gaitType = 1;
+        cmd.velocity[0] = 0.2f;
         cmd.footRaiseHeight = 0.1;
     }
 
-    if ( motiontime > 8000 && motiontime < 10000 ) {
+    if ( motiontime > 20000 && motiontime < 21000 ) {
         cmd.mode = 10;
     }
 
     // Forth leg of box
-    if ( motiontime > 10000 && motiontime < 11000 ) {
+    if ( motiontime > 26000 && motiontime < 28000 ) {
         cmd.mode = 2;
         cmd.gaitType = 1;
+        cmd.velocity[0] = 0.2f;
         cmd.footRaiseHeight = 0.1;
     }
 
-    if ( motiontime >11000 && motiontime < 13000 ) {
+    if ( motiontime > 29000 && motiontime < 30000 ) {
         cmd.mode = 10;
     }
 
     // Return to default standing position
-    if ( motiontime > 13000 ){
+    if ( motiontime > 35000 ){
         cmd.mode = 1;
     }
 
