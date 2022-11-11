@@ -41,6 +41,9 @@ target_link_libraries(example_walk_box_facing_forward ${EXTRA_LIBS})
 add_executable(example_joystick example/example_joystick.cpp)
 target_link_libraries(example_joystick ${EXTRA_LIBS})
 
+add_executable(example_rotate_in_place example/example_rotate_in_place.cpp)
+target_link_libraries(example_rotate_in_place ${EXTRA_LIBS})
+
 
 # install
 install(TARGETS
