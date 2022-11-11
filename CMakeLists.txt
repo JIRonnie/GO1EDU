@@ -35,6 +35,9 @@ target_link_libraries(example_walk ${EXTRA_LIBS})
 add_executable(example_walk_box example/example_walk_box.cpp)
 target_link_libraries(example_walk_box ${EXTRA_LIBS})
 
+add_executable(example_walk_box_facing_forward example/example_walk_box_facing_forward.cpp)
+target_link_libraries(example_walk_box_facing_forward ${EXTRA_LIBS})
+
 add_executable(example_joystick example/example_joystick.cpp)
 target_link_libraries(example_joystick ${EXTRA_LIBS})
 
