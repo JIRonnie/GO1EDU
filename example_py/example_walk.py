@@ -3,10 +3,45 @@
 import sys
 import time
 import math
+import json
+import socket
 
 sys.path.append('../lib/python/amd64')
 import robot_interface as sdk
 
+
+def parse_udp_message(udp_message):
+    try:
+        json_data = json.loads(udp_message)
+        prox_data = json.loads(json_data["Prox"])
+        gps_data = json.loads(json_data["GPS"])
+        imu_data = json.loads(json_data["IMU"])
+        
+        # Extracting values from each section
+        prox_l = prox_data["L"]
+        prox_c = prox_data["C"]
+        prox_r = prox_data["R"]
+        
+        gps_lat = gps_data["Lat"]
+        gps_lon = gps_data["Lon"]
+        gps_alt = gps_data["Alt"]
+        gps_vel = gps_data["Vel"]
+        gps_heading = gps_data["GpsHeading"]
+        
+        imu_roll = imu_data["Roll"]
+        imu_pitch = imu_data["Pitch"]
+        imu_yaw = imu_data["Yaw"]
+        imu_heading = imu_data["Heading"]
+        
+        # Returning the extracted values as a dictionary
+        return {
+            "Prox": {"L": prox_l, "C": prox_c, "R": prox_r},
+            "GPS": {"Lat": gps_lat, "Lon": gps_lon, "Alt": gps_alt, "Vel": gps_vel, "GpsHeading": gps_heading},
+            "IMU": {"Roll": imu_roll, "Pitch": imu_pitch, "Yaw": imu_yaw, "Heading": imu_heading}
+        }
+    except (KeyError, json.JSONDecodeError) as e:
+        print(f"Error parsing UDP message: {e}")
+        return None
 
 if __name__ == '__main__':
 
@@ -19,6 +54,15 @@ if __name__ == '__main__':
     state = sdk.HighState()
     udp.InitCmdData(cmd)
 
+    ip_address = '192.168.200.234'
+    port = 1901
+
+    udp_socket = socket.socket(socket.AF_INIT, socket.SOCK_DGRAM)
+
+    udp_socket.bind(ip_address, port)
+
+    print(f"Listening for UDP messages on {ip_address}:{port}...")
+
     motiontime = 0
     while True:
         time.sleep(0.002)
@@ -26,6 +70,15 @@ if __name__ == '__main__':
 
         udp.Recv()
         udp.GetRecv(state)
+
+        # Receive UDP message and client address
+        message, client_address = udp_socket.recvfrom(1024)  # 1024 is the buffer size
+
+        # Decode the message
+        decoded_message = message.decode('utf-8')
+
+        # Print the received message and client address
+        print(f"Received message: {decoded_message} from {client_address}")
         
         # print(motiontime)
         # print(state.imu.rpy[0])
@@ -117,3 +170,5 @@ if __name__ == '__main__':
 
         udp.SetSend(cmd)
         udp.Send()
+
+udp_socket.close()
